@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import WeatherIcon from "react-icons-weather";
 
 function WeatherApp() {
   const [lat, setLat] = useState(null);
