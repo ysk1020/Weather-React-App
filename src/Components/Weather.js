@@ -42,30 +42,40 @@ function WeatherApp() {
     const data = await response.json();
     setWeatherData(data);
   };
+  function convertToRealTime(unixTimestamp) {
+    const date = new Date(unixTimestamp * 1e3);
+    const localized = date.toLocaleTimeString([], "en-US");
+    return localized;
+  }
 
   return (
     <div className="md:container md:mx-auto p-64 bg-slate-200">
-      <div className="search-bar md:mx-auto">
+      <div className="md:container md:mx-auto search-bar  flex items-center justify-center space-x-5 ">
         <input
-          className=" p-2 rounded-lg"
+          className=" p-2 rounded-lg w-2/4 "
           type="text"
           name="searcbar"
           value={city}
           onChange={(e) => setCity(e.target.value)}
           placeholder="Search..."
         />
-        <button className=" p-2 rounded-lg" onClick={handleSearch}>
+
+        <button
+          className=" p-2 rounded-lg bg-lime-500 hover:bg-slate-600"
+          onClick={handleSearch}
+        >
           Search
         </button>
       </div>
       {weatherData ? (
         <>
           <div className="p-10 rounded-lg ">
-            <h1>Weather in {weatherData.name}</h1>
+            <h1>
+              Weather in {weatherData.name}, {weatherData.sys.country}
+            </h1>
           </div>
           <div className="flex space-x-4">
             <div className="w-10/12 p-16 rounded-lg shadow-lg ">
-              {/* <WeatherIcon iconId={weatherData.weather[0].id.toString()} /> */}
               <img
                 src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png`}
                 alt="Weather icon"
@@ -76,11 +86,33 @@ function WeatherApp() {
             </div>
             <div className="w-10/12 p-16  rounded-lg shadow-lg ">
               {" "}
-              <div className="flex justify-between text-black">
-                <p>Sunrise: {weatherData.sys.sunrise}</p>
-                <p>Sunset: {weatherData.sys.sunset}</p>
-                <p>Humidity: {weatherData.main.humidity}</p>
-                <p>Velocity: {weatherData.wind.speed}</p>
+              <div className="grid grid-cols-3 gap-6 place-content-evenly text-black">
+                <div className="flex flex-col">
+                  <p>{weatherData.main.temp_max}°C</p>
+                  <p>High</p>
+                </div>
+                <div className="flex flex-col">
+                  <p>{weatherData.main.humidity}</p>
+                  <p>Humidity</p>
+                </div>
+                <div className="flex flex-col">
+                  <p>{convertToRealTime(weatherData.sys.sunrise)}</p>
+                  <p>Sunrise</p>
+                </div>
+
+                <div className="flex flex-col">
+                  <p>{weatherData.main.temp_min}°C</p>
+                  <p>Low</p>
+                </div>
+
+                <div className="flex flex-col">
+                  <p>{weatherData.wind.speed} km/h</p>
+                  <p>Velocity</p>
+                </div>
+                <div className="flex flex-col">
+                  <p>{convertToRealTime(weatherData.sys.sunset)}</p>
+                  <p>Sunset</p>
+                </div>
               </div>
             </div>
           </div>
