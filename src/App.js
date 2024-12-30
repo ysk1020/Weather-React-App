@@ -1,12 +1,12 @@
-import React from "react";
-import WeatherApp from "./Components/Weather";
-
-function App() {
+import React, { useState } from "react";
+import Weather from "./Components/Weather";
+import NavBar from "./Components/NavBar.jsx";
+export default function App() {
+  const [weatherData, setWeatherData] = useState(null);
   return (
     <div>
-      <WeatherApp />
+      <NavBar setWeatherData={setWeatherData} />
+      <Weather weatherData={weatherData} setWeatherData={setWeatherData} />
     </div>
   );
 }
-
-export default App;
